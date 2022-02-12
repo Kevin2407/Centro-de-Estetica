@@ -1,14 +1,14 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include "funciones.h"
+#include"funciones.h"
 #include<locale.h>
-#include <wchar.h>
+#include<wchar.h>
 #include<stdbool.h>
 #include<ctype.h>
 
 struct registro {
-    char apellidoYNombre[60],usuario[10],contraseña[10],telefono[25];
+    char apellidoYNombre[60],usuario[10],contrasenia[10],telefono[25];
     bool recepcionista;
     int idProfesional,dni;
 }reg;
@@ -20,12 +20,12 @@ int main(){
 	int opcion;
 	FILE *arch;
 	//abrir archivos
-    arch = fopen("Recepcionistas.dat","rb");
+    arch = fopen("Recepcionistas.dat","ab");
     if (arch == NULL){
 			printf("Error al crear el archivo.");
 			exit(1);
     }
-    arch = fopen("Profesionales.dat","rb");
+    arch = fopen("Profesionales.dat","ab");
     if (arch == NULL){
 			printf("Error al crear el archivo.");
 			exit(1);
@@ -58,25 +58,47 @@ int main(){
 		}
 	}while(opcion!=5);
 }
+void verificarUsuario(FILE *arch,registro reg);
+void registrarProfesional(FILE *arch,registro reg){
+	
+	arch=fopen("Profesionales.dat","ab");
+	system("cls");
+	printf("\nRegistro de profesionales");
+	printf("\n=========================");
+	printf("\nEn este orden. Ingrese el apellido y el nombre: ");
+	_flushall();
+	gets(reg.apellidoYNombre);
+	printf("\nIdentificacion profesional: ");
+	scanf("%d",&reg.idProfesional);
+	printf("\nDNI: ");
+	scanf("%d",&reg.dni);
+	printf("\nNumero de telefono: ");
+	_flushall();
+	gets(reg.telefono);
+	fwrite(&reg,sizeof(registro),1,arch);
+	fclose(arch);
+	//tal vez convenga colocar un verificar si son correctos los datos ingresados
+	system("cls");//posiblemente quitar
+	printf("Registro de cuenta profesional");
+	printf("\n=========================");
+	printf("\nRequisitos:\n1. Ser único para cada usuario registrado.\n2. Comenzar con una letra minúscula.\n3. Tener al menos 2 letras mayúsculas.\n4. Tener como máximo 3 dígitos.");
+	verificarUsuario(arch,reg);
+	
+}
+
 void verificarUsuario(FILE *arch,registro reg){
-	int cantidadLetras,cm=0,cn=0,granBandera=0,b=0/*bandera chica de la condicion de usuarios diferente*/;
-	char verificador[10],apeYNombre[60];;
+	int cantidadLetras,cm=0/*contador letras mayusculas*/,cn=0/*contador de digitos*/,granBandera=0,b=0/*bandera chica de la condicion de usuarios diferente*/;
+	char verificador[10],usuario[10];
 	
 	arch=fopen("Profesionales.dat","a+b");
-	
-	cantidadLetras=strlen(reg.usuario);
-	for(int i=0;i<cantidadLetras;i++){//contar cantidad de letras
-		verificador[i]=reg.usuario[i];
-	}
-	
+		
 	do{
 		printf("\nNombre de usuario: ");
 		_flushall();
-		gets(apeYNombre);
-		
-		cantidadLetras=strlen(reg.usuario);
+		gets(usuario);
+		cantidadLetras=strlen(usuario);
 		for(int i=0;i<cantidadLetras;i++){//contar cantidad de letras
-			verificador[i]=reg.usuario[i];
+			verificador[i]=usuario[i];
 		}
 	
 	
@@ -85,10 +107,10 @@ void verificarUsuario(FILE *arch,registro reg){
 			//verificar==usuario... la primera letra la paso a minuscula del verificador
 			verificador[0]=tolower(verificador[0]);
 			//comparo ambas y si son iguales, cumple la condicion de la primera letra es minuscula
-				if(strcmp(verificador,reg.usuario)==0){
+				if(strcmp(verificador,usuario)==0){
 					for(int i=0;i<cantidadLetras;i++){//verificador de cantidad de letras mayusculas
 						//verificacion por codigo ascii
-						if(reg.usuario[i]>=65&&reg.usuario[i]<=90){
+						if(usuario[i]>=65&&usuario[i]<=90){
 							cm++;
 						}
 					}
@@ -96,7 +118,7 @@ void verificarUsuario(FILE *arch,registro reg){
 					if(cm>=2){
 						for(int i=0;i<cantidadLetras;i++){//verificador de cantidad de numeros
 						//verificacion por codigo ascii
-							if(reg.usuario[i]>=48&&reg.usuario[i]<=57){
+							if(usuario[i]>=48&&usuario[i]<=57){
 								cn++;
 							}
 						}
@@ -106,7 +128,7 @@ void verificarUsuario(FILE *arch,registro reg){
 							fread(&reg,sizeof(registro),1,arch);
 							
 							while(!feof(arch)&&b==0){
-								if(strcmp(apeYNombre,reg.usuario)==0){
+								if(strcmp(usuario,reg.usuario)==0){
 								b=1;			
 								
 								/*system("cls");
@@ -119,7 +141,7 @@ void verificarUsuario(FILE *arch,registro reg){
 							fread(&reg,sizeof(registro),1,arch);
 							}
 							if(b==0){
-								fwrite(&reg,sizeof(registro),1,arch);
+								fwrite(&reg.usuario,sizeof(registro),1,arch);
 							}
 							else{
 								printf("\n\n***El usuario ya existe***");
@@ -137,7 +159,7 @@ void verificarUsuario(FILE *arch,registro reg){
 					}
 				}
 				else{
-					printf("\nPrimera letra tiene que ser mayuscula");
+					printf("\nPrimera letra tiene que ser minuscula");
 					granBandera=1;
 				}
 		}
@@ -146,30 +168,4 @@ void verificarUsuario(FILE *arch,registro reg){
 			granBandera=1;
 		}
 	}while(granBandera==0);
-}
-
-void registrarProfesional(FILE *arch,registro reg){
-	
-	arch=fopen("Profesionales.dat","ab");
-	system("cls");
-	printf("\nRegistro de profesionales");
-	printf("\n=========================");
-	printf("\nEn este orden. Ingrese el apellido y el nombre: ");
-	_flushall();
-	gets(reg.apellidoYNombre);
-	printf("\nIdentificacion profesional: ");
-	scanf("%d",&reg.idProfesional);
-	printf("\nDNI: ");
-	scanf("%d",&reg.dni);
-	printf("\nNumero de telefono: ");
-	_flushall();
-	gets(reg.telefono);
-	fclose(arch);
-	//tal vez convenga colocar un verificar si son correctos los datos ingresados
-	system("cls");//posiblemente quitar
-	printf("\n\nRegistro de cuenta profesional");
-	printf("\n=========================");
-	printf("\nRequisitos:\n1. Ser único para cada usuario registrado.\n2. Comenzar con una letra minúscula.\n3. Tener al menos 2 letras mayúsculas.\n4. Tener como máximo 3 dígitos.");
-	verificarUsuario(arch,reg);
-	
 }
