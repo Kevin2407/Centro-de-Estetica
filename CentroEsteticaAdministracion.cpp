@@ -4,7 +4,8 @@
 #include "funciones.h"
 #include<locale.h>
 #include <wchar.h>
-#include<bool.h>
+#include<stdbool.h>
+#include<ctype.h>
 
 struct registro {
     char apellidoYNombre[60],usuario[10],contraseña[10],telefono[25];
@@ -57,48 +58,98 @@ int main(){
 		}
 	}while(opcion!=5);
 }
-void verificarUsuario(FILE *ARCH,char apeYNombre,registro reg.usuario){
-	int b;
+void verificarUsuario(FILE *arch,registro reg){
+	int cantidadLetras,cm=0,cn=0,granBandera=0,b=0/*bandera chica de la condicion de usuarios diferente*/;
+	char verificador[10],apeYNombre[60];;
+	
 	arch=fopen("Profesionales.dat","a+b");
 	
+	cantidadLetras=strlen(reg.usuario);
+	for(int i=0;i<cantidadLetras;i++){//contar cantidad de letras
+		verificador[i]=reg.usuario[i];
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	fread(&reg,sizeof(registro),1,arch);
-	b=0;
-	while(!feof(arch)){
+	do{
+		printf("\nNombre de usuario: ");
+		_flushall();
+		gets(apeYNombre);
 		
-		if(strcmp(apeYNombre,reg.usuario)==0){
-			printf("\n\n***El usuario ya existe***");
-			do{
-				printf("\nReingresar nombre de usuario");
-				printf("\n=========================");
-				printf("\nNombre de usuario: ");
-				_flushall();
-				gets(apeYNombre);
-				if(strcmp(apeYNombre,reg.usuario)==0){
-					b=1;
+		cantidadLetras=strlen(reg.usuario);
+		for(int i=0;i<cantidadLetras;i++){//contar cantidad de letras
+			verificador[i]=reg.usuario[i];
+		}
+	
+	
+	//condicion de cantidad
+		if(cantidadLetras>=6&&cantidadLetras<=10){
+			//verificar==usuario... la primera letra la paso a minuscula del verificador
+			verificador[0]=tolower(verificador[0]);
+			//comparo ambas y si son iguales, cumple la condicion de la primera letra es minuscula
+				if(strcmp(verificador,reg.usuario)==0){
+					for(int i=0;i<cantidadLetras;i++){//verificador de cantidad de letras mayusculas
+						//verificacion por codigo ascii
+						if(reg.usuario[i]>=65&&reg.usuario[i]<=90){
+							cm++;
+						}
+					}
+					//verificador de cantidad letras mayusculas
+					if(cm>=2){
+						for(int i=0;i<cantidadLetras;i++){//verificador de cantidad de numeros
+						//verificacion por codigo ascii
+							if(reg.usuario[i]>=48&&reg.usuario[i]<=57){
+								cn++;
+							}
+						}
+						//cumple condicion de tener menos de 3 digitos
+						if(cn<=3){
+							//verificador de usuarios iguales
+							fread(&reg,sizeof(registro),1,arch);
+							
+							while(!feof(arch)&&b==0){
+								if(strcmp(apeYNombre,reg.usuario)==0){
+								b=1;			
+								
+								/*system("cls");
+								printf("\nReingresar nombre de usuario");
+								printf("\n=========================");
+								printf("\nNombre de usuario: ");
+								_flushall();
+								gets(apeYNombre);*/			
+								}
+							fread(&reg,sizeof(registro),1,arch);
+							}
+							if(b==0){
+								fwrite(&reg,sizeof(registro),1,arch);
+							}
+							else{
+								printf("\n\n***El usuario ya existe***");
+								granBandera=1;
+							}
+						}
+						else{
+							printf("\nTiene que haber menos de 3 digitos");
+							granBandera=1;
+						}						
+					}
+					else{
+						printf("\nTiene que haber dos o más mayusculas");
+						granBandera=1;
+					}
 				}
 				else{
-					b=0;
+					printf("\nPrimera letra tiene que ser mayuscula");
+					granBandera=1;
 				}
-			}while(b=1);
 		}
-		fread(&reg,sizeof(registro),1,arch);
-	}
+		else{
+			printf("\nCantidad minima de caracteres es 6 y maxima de 10");
+			granBandera=1;
+		}
+	}while(granBandera==0);
 }
 
 void registrarProfesional(FILE *arch,registro reg){
-	char apeYNombre[60];
+	
 	arch=fopen("Profesionales.dat","ab");
 	system("cls");
 	printf("\nRegistro de profesionales");
@@ -115,12 +166,10 @@ void registrarProfesional(FILE *arch,registro reg){
 	gets(reg.telefono);
 	fclose(arch);
 	//tal vez convenga colocar un verificar si son correctos los datos ingresados
+	system("cls");//posiblemente quitar
 	printf("\n\nRegistro de cuenta profesional");
 	printf("\n=========================");
 	printf("\nRequisitos:\n1. Ser único para cada usuario registrado.\n2. Comenzar con una letra minúscula.\n3. Tener al menos 2 letras mayúsculas.\n4. Tener como máximo 3 dígitos.");
-	printf("\nNombre de usuario: ");
-	_flushall();
-	gets(apeYNombre);
-	verificarUsuario(arch,apeYNombre,reg);
+	verificarUsuario(arch,reg);
 	
 }
