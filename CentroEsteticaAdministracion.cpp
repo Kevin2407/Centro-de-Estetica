@@ -10,9 +10,9 @@ int main(){
 	int opcion;
 	do{
 		system("cls");
-		printf("Módulo Administración");
+		printf("Modulo Administracion");
 		printf("\n=========================");
-		printf("\n1.- Registrar Profesional\n2.- Registrar Usuario Recepcionista\n3.- Atenciones por Profesional\n4.- Ranking de Profesionales por Atenciones \n\n\n5.- Cerrar la aplicación.\n\nIngrese una opción: ");
+		printf("\n1.- Registrar Profesional\n2.- Registrar Usuario Recepcionista\n3.- Atenciones por Profesional\n4.- Ranking de Profesionales por Atenciones \n\n\n5.- Cerrar la aplicaciï¿½n.\n\nIngrese una opciï¿½n: ");
 		scanf("%d",&opcion);
 		if(opcion!=1 &&opcion!=2 &&opcion!=3 &&opcion!=4){
 			do{
@@ -20,9 +20,9 @@ int main(){
 			printf("***ERROR AL DIGITAR\n"),
 			system("pause");
 			system("cls");
-			printf("Módulo Administración");
+			printf("Modulo Administracion");
 			printf("\n=========================");
-			printf("\n1.- Registrar Profesional\n2.- Registrar Usuario Recepcionista\n3.- Atenciones por Profesional\n4.- Ranking de Profesionales por Atenciones \n\n\n5.- Cerrar la aplicación.\n\nIngrese una opción: ");
+			printf("\n1.- Registrar Profesional\n2.- Registrar Usuario Recepcionista\n3.- Atenciones por Profesional\n4.- Ranking de Profesionales por Atenciones \n\n\n5.- Cerrar la aplicaciï¿½n.\n\nIngrese una opciï¿½n: ");
 			scanf("%d",&opcion);
 			}while(opcion!=1 &&opcion!=2 &&opcion!=3 &&opcion!=4);
 		}
