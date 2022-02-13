@@ -9,7 +9,7 @@
 
 struct registro{
     char apellidoYNombre[60],usuario[10],contrasenia[32],telefono[25];
-    bool recepcionista;
+    bool recepcionista,borrado;
     int idProfesional,dni;
 }reg;
 
