@@ -61,11 +61,9 @@ int main(){
 //profesional
 void verificarUsuario(FILE *arch,registro reg);
 void verificarContrasenia(FILE *arch,registro reg);
-void registrarProfesional(FILE *arch,registro reg){
-	
+void registrarProfesional(FILE *arch,registro reg){	
 	arch=fopen("Profesionales.dat","ab");
-
-intf("\nEn este orden. Ingrese el apellido y el nombre: ");
+	printf("\nEn este orden. Ingrese el apellido y el nombre: ");
 	_flushall();
 	gets(reg.apellidoYNombre);
 	printf("\nIdentificacion profesional: ");
@@ -125,47 +123,44 @@ void verificarUsuario(FILE *arch,registro reg){
 						}
 					}
 					//verificador de cantidad letras mayusculas
-					if(cm>=2)
-							//verificador de usuarios iguales
-							fread(&reg,sizeof(registro),1,arch);
-							
-							while(!feof(arch)&&b==0){
-								if(strcmp(usuario,reg.usuario)==0){
-								b=1;			
-								
-								/*system("cls");
-								printf("\nReingresar nombre de usuario");
-								printf("\n=========================");
-								printf("\nNombre de usuario: ");
-								_flushall();
-								gets(apeYNombre);*/			
-								}
-							fread(&reg,sizeof(registro),1,arch);
-							}
-							if(b==0){//finaliza todo si b es 0 ya que granBandera seguiria siendo 0 por lo que se sale del ciclo.
-								fwrite(&reg.usuario,sizeof(registro),1,arch);
-							}
-							else{
-								printf("\n\n***El usuario ya existe***");
-								granBandera=1;
-							}
-						
-							printf("\nTiene que haber menos de 3 digitos");
-							granBandera=1;
-						}						
+					if(cm>=2){		
 						for(int i=0;i<cantidadLetras;i++){//verificador de cantidad de numeros}
 						//cumple condicion de tener menos de 3 digitos
-						if(cn<=3){}
-						else{}
+							if(cn<=3){
+										
+								//verificador de usuarios iguales
+								fread(&reg,sizeof(registro),1,arch);		
+								while(!feof(arch)&&b==0){
+									if(strcmp(usuario,reg.usuario)==0){
+									b=1;				
+									}
+								fread(&reg,sizeof(registro),1,arch);
+								}
+								if(b==0){//finaliza todo si b es 0 ya que granBandera seguiria siendo 0 por lo que se sale del ciclo.
+								fwrite(&reg.usuario,sizeof(registro),1,arch);
+								}
+								else{
+									printf("\n\n***El usuario ya existe***");
+									granBandera=1;
+								}
+						
+							}
+							else{
+							printf("\nTiene que haber menos de 3 digitos");
+							granBandera=1;
+							}
+						}
+					
 					}
 					else{
 						printf("\nTiene que haber dos o más mayusculas");
 						granBandera=1;
-					}
+					}		
 				}
 				else{
 					printf("\nPrimera letra tiene que ser minuscula");
 					granBandera=1;
+			
 				}
 		}
 		else{
@@ -173,7 +168,8 @@ void verificarUsuario(FILE *arch,registro reg){
 			granBandera=1;
 		}
 	}while(granBandera==1);
-	fclose(arch);
+	
+fclose(arch);
 }
 void verificarContrasenia(FILE *arch,registro reg){
 	int cantidadLetras,cMayusc=0,cMinusc=0,cNum=0,cOtrosCaract=0,granBandera,b=0/*bandera chica de la condicion de usuarios diferente*/;
@@ -239,7 +235,4 @@ void verificarContrasenia(FILE *arch,registro reg){
 	}while(granBandera==1);	
 	fclose(arch);
 }
-//recepcionista
-/*void registrarRecepcionista(FILE *arch,registro reg){
-	
-}*/
+
