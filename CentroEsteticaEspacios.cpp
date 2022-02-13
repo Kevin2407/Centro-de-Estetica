@@ -36,7 +36,7 @@ int main(){
         switch (op)
         {
         case 1:
-            iniciarSesion(arch,bs);
+            iniciarSesion(arch,bs,false);
             menuEspacios(op);
             break;
 

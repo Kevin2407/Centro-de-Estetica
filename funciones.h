@@ -4,16 +4,14 @@
 #include <locale.h>
 #include <wchar.h>
 
-typedef char cadena[80];
-
 struct registro {
     char apellidoYNombre[60],usuario[10],contraseña[10],telefono[25];
     bool recepcionista;
     int idProfesional,dni;
 }reg;
 
-void menu(int &op);
-void iniciarSesion(FILE *arch, bool &bs);
+void menuEspacios(int &op);
+void iniciarSesion(FILE *arch, bool &bs, bool recOprof);
 
 
 
@@ -32,9 +30,13 @@ void menuEspacios(int &op)
     scanf("%d",&op);
 }
 
-void iniciarSesion(FILE *arch, bool &bs) 
+
+
+
+void iniciarSesion(FILE *arch, bool &bs, bool recOprof) 
 {
     // el boolean bs (bandera sesion) indica si la sesion esta abierta o cerrada, si es true, permite al usuario acceder a las demas funciones
+    // el boolean recOprof (recepcionista o profesional) indica si la sesion a iniciar es de un recepcionista o de un profesional (true- recepcionista, false- profesional)
 
     bool val = false; // el boolean val (validado) se pone en true si se el usuario y contraseña coinciden con algun usuario y contraseña del archivo
     int op; // el usuario ingresa esta variable para que el programa sepa si quiere cerrar una sesion ya iniciada o no
@@ -50,17 +52,37 @@ void iniciarSesion(FILE *arch, bool &bs)
         flushall();
         gets(contra);
 
-        arch=fopen("Profesionales.dat","ar");
+
+        if (recOprof)
+        {
+            arch=fopen("Recepcionistas.dat","rb");
+            if (arch == NULL){
+			    printf("Error. No hay archivo de cuentas.\nCree el archivo e intente ingresar nuevamente");
+                system("pause");
+                fclose(arch);
+                exit(1);
+            }
+        }else
+        {
+            arch=fopen("Profesionales.dat","rb");
+            if (arch == NULL){
+			    printf("Error. No hay archivo de cuentas.\nCree el archivo e intente ingresar nuevamente");
+                system("pause");
+                fclose(arch);
+                exit(1);
+            }
+        }
+        
 
         fread(&prof,sizeof(registro),1,arch);
 
         while(!feof(arch)) 
         {
-            if ( strcmp(nomUsuario,prof.usuario)  && strcmp(contra,prof.contraseña)) // si el nombre de usuario y contraseña coinciden, se valida
+            if ( strcmp(nomUsuario,prof.usuario) == 0  && strcmp(contra,prof.contraseña) == 0) // si el nombre de usuario y contraseña coinciden, se valida
             {
                 val=true;
             }
-        fread(&prof,sizeof(registro),1,arch);
+            fread(&prof,sizeof(registro),1,arch);
         }
 
         if (val)
@@ -92,7 +114,9 @@ void iniciarSesion(FILE *arch, bool &bs)
             if (op==1)
             {
                 bs=false;
-                iniciarSesion(arch, bs);
+                printf("Se ha cerrado sesion\n");
+                system("pause");
+                system("cls");
             }else
             {
                 printf("No se ha cerrado sesion\n");
