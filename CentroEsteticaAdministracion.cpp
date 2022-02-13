@@ -7,7 +7,7 @@
 #include<stdbool.h>
 #include<ctype.h>
 
-struct registro {
+struct registro{
     char apellidoYNombre[60],usuario[10],contrasenia[32],telefono[25];
     bool recepcionista;
     int idProfesional,dni;
@@ -46,7 +46,7 @@ int main(){
 				registrarProfesional(arch,reg);
 				break;
 			case 2:
-			//Registrar Usuario Recepcionista
+			
 				registrarRecepcionista(arch,reg);
 				break;
 			case 3:
@@ -54,6 +54,8 @@ int main(){
 			case 4:
 			//Ranking de Profesionales por Atenciones
 			case 5:
+				printf("\n\nEl sistema se esta cerrando...\n");
+				system("pause");
 				return 0;
 			//cerrar
 			default:
@@ -241,9 +243,31 @@ void verificarContrasenia(FILE *arch,registro reg){
 }
 //recepcionista
 void registrarRecepcionista(FILE *arch,registro reg){
-	
-	
-	
-	
-	
+	arch=fopen("Recepcionistas.dat","ab");
+	printf("\nEn este orden. Ingrese el apellido y el nombre: ");
+	_flushall();
+	gets(reg.apellidoYNombre);
+	printf("\nIdentificacion profesional: ");
+	scanf("%d",&reg.idProfesional);
+	printf("\nDNI: ");
+	scanf("%d",&reg.dni);
+	printf("\nNumero de telefono: ");
+	_flushall();
+	gets(reg.telefono);
+	reg.recepcionista=true;
+	fwrite(&reg,sizeof(registro),1,arch);
+	//tal vez convenga colocar un verificar si son correctos los datos ingresados
+	system("cls");//posiblemente quitar
+	printf("Registro de cuenta recepcionista");
+	printf("\n=========================");
+	printf("\nRequisitos:\n1. Ser único para cada usuario registrado.\n2. Comenzar con una letra minúscula.\n3. Tener al menos 2 letras mayúsculas.\n4. Tener como máximo 3 dígitos.\n5. Un minimo de 6 caracteres y un maximo de 10");
+	verificarUsuario(arch,reg);
+	//contraseña
+	system("cls");//posiblemente quitar
+	printf("Registro de contraseña");
+	printf("\n=========================");
+	printf("\nRequisitos:\n1. Deberá contener al menos una letra mayúscula, una letra minúscula y un número.\n2. No podrá contener ningún carácter de puntuación, ni acentos, ni espacios. Sólo caracteres alfanuméricos.\n3. Deberá tener entre 6 y 32 caracteres.\n4. No debe tener más de 3 caracteres numéricos consecutivos.\n5. o debe tener 2 caracteres consecutivos que refieran a letras alfabéticamente consecutivas (ascendentemente). Este criterio es válido tanto para letras mayúsculas, minúsculas o combinación de ambas.");
+	verificarContrasenia(arch,reg);
+
+	fclose(arch);
 }
