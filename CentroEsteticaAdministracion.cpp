@@ -83,6 +83,7 @@ void registrarProfesional(FILE *arch,registro reg){
 	_flushall();
 	gets(reg.telefono);
 	reg.recepcionista=false;
+	reg.borrado=false;
 	// fwrite(&reg,sizeof(registro),1,arch);
 	//tal vez convenga colocar un verificar si son correctos los datos ingresados
 	system("cls");//posiblemente quitar
