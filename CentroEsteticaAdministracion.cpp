@@ -14,6 +14,7 @@ struct registro {
 }reg;
 
 void registrarProfesional(FILE *arch,registro reg);
+void registrarRecepcionista(FILE *arch,registro reg);
 
 int main(){
 	setlocale(LC_ALL, "");
@@ -43,8 +44,11 @@ int main(){
 		switch(opcion){
 			case 1:			
 				registrarProfesional(arch,reg);
+				break;
 			case 2:
 			//Registrar Usuario Recepcionista
+				registrarRecepcionista(arch,reg);
+				break;
 			case 3:
 			//Atenciones por Profesional
 			case 4:
@@ -229,10 +233,17 @@ void verificarContrasenia(FILE *arch,registro reg){
 			}
 		}
 		else{
-			printf("\nCantidad minima de caracteres es 6 y maxima de 10");
+			printf("\nCantidad minima de caracteres es 6 y maxima de 32");
 			granBandera=1;	
 		}
 	}while(granBandera==1);	
 	fclose(arch);
 }
-
+//recepcionista
+void registrarRecepcionista(FILE *arch,registro reg){
+	
+	
+	
+	
+	
+}
