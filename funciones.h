@@ -1,14 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <locale.h>
-#include <wchar.h>
-
-struct registro {
-    char apellidoYNombre[60],usuario[10],contraseña[10],telefono[25];
-    bool recepcionista;
-    int idProfesional,dni;
-}reg;
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<locale.h>
+#include<wchar.h>
+#include<stdbool.h>
+#include<ctype.h>
 
 void menuEspacios(int &op);
 void iniciarSesion(FILE *arch, bool &bs, bool recOprof);
@@ -46,10 +42,10 @@ void iniciarSesion(FILE *arch, bool &bs, bool recOprof)
     if (!bs)  // es decir, si no hay una sesion iniciada
     {
         printf("Ingrese nombre de usuario: ");
-        flushall();
+        _flushall();
         gets(nomUsuario);
         printf("Ingrese la contraseña: ");
-        flushall();
+        _flushall();
         gets(contra);
 
 
@@ -78,12 +74,13 @@ void iniciarSesion(FILE *arch, bool &bs, bool recOprof)
 
         while(!feof(arch)) 
         {
-            if ( strcmp(nomUsuario,prof.usuario) == 0  && strcmp(contra,prof.contraseña) == 0) // si el nombre de usuario y contraseña coinciden, se valida
-            {
+            if ( strcmp(nomUsuario,prof.usuario) == 0  && strcmp(contra,prof.contrasenia) == 0) 
+            {// si el nombre de usuario y contraseña coinciden, se valida
                 val=true;
             }
             fread(&prof,sizeof(registro),1,arch);
         }
+
 
         if (val)
         {
