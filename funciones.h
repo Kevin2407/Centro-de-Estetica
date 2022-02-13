@@ -57,7 +57,7 @@ void iniciarSesion(FILE *arch, bool &bs, bool recOprof)
         {
             arch=fopen("Recepcionistas.dat","rb");
             if (arch == NULL){
-			    printf("Error. No hay archivo de cuentas.\nCree el archivo e intente ingresar nuevamente");
+                printf("Error. No hay archivo de cuentas.\nCree el archivo e intente ingresar nuevamente");
                 system("pause");
                 fclose(arch);
                 exit(1);
@@ -66,7 +66,7 @@ void iniciarSesion(FILE *arch, bool &bs, bool recOprof)
         {
             arch=fopen("Profesionales.dat","rb");
             if (arch == NULL){
-			    printf("Error. No hay archivo de cuentas.\nCree el archivo e intente ingresar nuevamente");
+                printf("Error. No hay archivo de cuentas.\nCree el archivo e intente ingresar nuevamente");
                 system("pause");
                 fclose(arch);
                 exit(1);
