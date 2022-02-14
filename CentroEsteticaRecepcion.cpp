@@ -43,7 +43,7 @@ int main(){
 				break;
 			case 2:
 				if(sesionIniciada==1){				
-					Registrar cliente(arch,reg);
+					RegistrarCliente(arch,reg);
 					break;
 				}
 				else{
